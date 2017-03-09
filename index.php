@@ -1,32 +1,38 @@
 <?php
+
+ini_set('display_errors',1);
+error_reporting(-1);
+
 define('DATA_PATH', realpath(dirname(__FILE__).'/data'));
 //echo DATA_PATH;
 //echo "hello index";
 $applications = array(
-	'APPOO1' => '28e336ac6c9423d946ba02d19c6a2632');
+ 	'APP001' => '1234');
+//print_r($applications);
 include_once ('models/TodoItem.php');
-	//echo "true  sfsd";
 try
-{
-	$enc_request = $_REQUEST['enc_request'];
-	$app_id = $_REQUEST['app_id']; 
+ {
+ 	$params = $_REQUEST;
+ 	$app_id = $params['app_id'];
+ 	//echo $app_id;
+ 	print_r($params);
 
-	if(!isset($applications[$app_id]))
+	if(isset($applications[$app_id]))
 	{
 		throw new Exception('Application doesnot exist');
 	}
 
-	$params = json_decode(trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $applications[$app_id],base64_decode($enc_request),MCRYPT_MODE_ECB)));
+// 	// //$params = json_decode(trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $applications[$app_id],base64_decode($enc_request),MCRYPT_MODE_ECB)));
 
-	if($params == false || ) isset($params->controller) == false || isset($params->action) == false)
+	if($params['action'] == NULL && $params['controller'] == NULL)
 	{
 		throw new Exception('Request is not valid');
 	}
 
-	$params = (array)$params;
-	//$params = $_REQUEST;
 	$controller =  ucfirst(strtolower($params['controller']));
 	$action = strtolower($params['action']).'Action';
+	//echo $controller;
+	//echo $action;
 
 	if(file_exists("controllers/{$controller}.php"))
 	{
@@ -38,29 +44,25 @@ try
 	}
 
 	$controller = new $controller($params);
-	if($controller)
-	{
-		echo" conroller";
-	}
-
 	if (method_exists($controller, $action) === false)
 	{
 		throw new Exception ('Action is invalid');
 	}
-
+	//echo "new name";
 	$result['data'] = $controller->$action();
-		//print_r ($result);
+	print_r ($result);
 	$result['success'] = true;
+	//$result = json_encode($result);
 		//error_reporting(E_ALL);
 
-	} 
-catch (Exception $e)
-{
-	$result['success'] = false;
-	$result['errormsg'] = $e->getMessage();
-	//echo $result;
+} 
+ catch (Exception $e)
+ {
+ 	$result['success'] = false;
+ 	$result['errormsg'] = $e->getMessage();
+ 	echo $result['success'];
 }
 
-//echo json_decode($result);
+echo json_encode($result);
 exit();
 ?>

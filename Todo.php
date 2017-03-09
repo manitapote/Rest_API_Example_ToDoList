@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors','On');
+ini_set('display_errors',1);
 error_reporting(-1);
 
 class Todo
@@ -20,8 +20,8 @@ class Todo
 		$todo->description = $this->_params['description'];
 		$todo->due_date = $this->_params['due_date'];
 		$todo->id_done = $this->_params['is_done'];
-		$todo->save($this->_params['username'],$this->_params['userpass']);
-		//return json_encode($todo);
+		$todo->save('manoj','mm');
+
 		return $todo->toArray();
 	}
 
@@ -38,6 +38,11 @@ class Todo
 	public function deleteAction()
 	{
 
+	}
+
+	public function index(){
+		Todo todo = new Todo();
+		todo.createAction();
 	}
 }
 ?>
