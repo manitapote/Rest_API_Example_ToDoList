@@ -12,20 +12,7 @@ class TodoItem
 
 	public function save($username, $userpass)
 	{
-		$userhash = $username.'_'.$userpass;//sha1("{$username}_{$userpass}");
-		//echo  $userhash;
-
-		// //file_put_contents("log.txt","inside save funcstioon");
-		// if(file_exists("log.txt"))
-		// {
-		// 	$myfile = fopen("log.txt", "w");
-		// 	$txt = "Jane Doe\n";
-		// 	fwrite($myfile, $txt);
-		// 	fclose($myfile);
-		// }
-
-
-
+		$userhash = $username.'_'.$userpass;
 		if(is_dir(DATA_PATH."/{$userhash}") === false)
 		{
 			//error_log('message in dfd');
@@ -38,13 +25,13 @@ class TodoItem
 		if (is_null($this->todo_id)|| !is_numeric($this->todo_id))
 		{
 			$this->todo_id = time();
-		}
+		}	
 
 		$todo_item_array = $this->toArray();
 		//print_r($todo_item_array);
 
 		$success = file_put_contents(DATA_PATH."/{$userhash}/{$this->todo_id}.txt", serialize($todo_item_array));
-		echo $success;
+		//echo $success;
 
 		if($success === false)
 		{
@@ -64,6 +51,32 @@ class TodoItem
 			'is_done'=>$this->is_done,
 
 			);
+	}
+
+	public function read($username,$userpass)
+	{
+
+		$userhash= $username."_".$userpass;
+		$data= '';
+		$i = 0;
+		//echo "read called";
+		if(is_dir(DATA_PATH."/{$userhash}") === true)
+		{
+			
+			
+			foreach (glob(DATA_PATH."/{$userhash}/*.txt") as $key => $value) 
+			{
+				//echo "\n $key:"."$value \n</br>";
+				$data[$i] = file_get_contents($value);
+				//echo $value;
+				//$data = unserialize($f);
+				$i = $i + 1;
+				//var_dump($data);
+			}
+
+		}
+		//var_dump($data);
+		return $data;
 	}
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors','On');
+ini_set('display_errors',1);
 error_reporting(-1);
 
 class Todo
@@ -27,6 +27,10 @@ class Todo
 
 	public function readAction ()
 	{
+		//echo "readaction\n";
+		$todo = new TodoItem();
+		$status = $todo->read($this->_params['username'],$this->_params['userpass']);
+		return $status;
 
 	}
 
