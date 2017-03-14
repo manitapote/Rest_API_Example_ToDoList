@@ -73,9 +73,18 @@ class TodoItem
 				$i = $i + 1;
 				//var_dump($data);
 			}
-
+			
 		}
-		//var_dump($data);
+		else
+		{
+			return true;
+		}
+		return $data;
+	}
+
+	public function get_update($id, $username, $userpass)
+	{
+		$data = file_get_contents(DATA_PATH."/{$username}_{$userpass}/{$id}.txt");
 		return $data;
 	}
 }

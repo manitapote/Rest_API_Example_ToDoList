@@ -50,10 +50,10 @@ try
 	//return($result);
 } 
  catch (Exception $e)
- {
+{
  	$result['success'] = false;
  	$result['errormsg'] = $e->getMessage();
- 	echo $result['success'];
+ 	echo $result['success']; 
 }
 //print_r($result);
 exit();
