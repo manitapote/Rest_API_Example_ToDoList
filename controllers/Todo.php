@@ -21,7 +21,7 @@ class Todo
 		$todo->title = $this->_params['title'];		
 		$todo->description 	= $this->_params['description'];
 		$todo->due_date = $this->_params['due_date'];
-		$todo->id_done = $this->_params['is_done'];
+		$todo->is_done = $this->_params['is_done'];
 		$todo->save($this->_params['username'],$this->_params['userpass']);
 		//return json_encode($todo);
 		return $todo->toArray();
@@ -41,9 +41,23 @@ class Todo
 		return $result;
 	}
 
+	public function do_updateAction()
+	{
+		//echo "from server";
+		$this->_toddo->title =  $this->_params['title'];
+		$this->_toddo->description = $this->_params['description'];
+		$this->_toddo->due_date = $this->_params['due_date'];
+		$this->_toddo->is_done = $this->_params['is_done'];
+		$this->_toddo->todo_id = $this->_params['todo_id'];
+		$data = $this->_toddo->toArray();
+		// print_r($data);
+		$result = $this->_toddo->do_update($this->_params['todo_id'], $this->_params['username'], $this->_params['userpass'],$data);
+		return $result;
+	}
+
 	public function deleteAction()
 	{
-
+		return "delete section";
 	}
 }
 ?>

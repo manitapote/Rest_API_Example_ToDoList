@@ -87,5 +87,11 @@ class TodoItem
 		$data = file_get_contents(DATA_PATH."/{$username}_{$userpass}/{$id}.txt");
 		return $data;
 	}
+
+	public function do_update($id, $username, $userpass, $data)
+	{
+		$success = file_put_contents(DATA_PATH."/{$username}_{$userpass}/{$id}.txt", serialize($data));
+		return $success;
+	}
 }
 ?>
